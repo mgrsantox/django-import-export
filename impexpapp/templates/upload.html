@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Import/Export</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<style>
+		.error{
+			color: red;
+		}
+		ul li{
+			display:inline-block;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<h1>Django Import/Export CSV file to Database</h1>
+			{% if messages %}
+			<ul class="messages">
+			    {% for message in messages %}
+			    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+			        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}{% endif %}
+			        {{ message }}
+			    </li>
+			    {% endfor %}
+			</ul>
+			{% endif %}
+		<form action="{% url 'impexpapp:upload' %}" method="POST" enctype="multipart/form-data">{% csrf_token %}
+			<div class="form-group">
+			    <label for="exampleFormControlFile1">Import your CSV file</label>
+			    <input type="file" name="file" class="form-control-file" id="exampleFormControlFile1">
+		  	</div>
+		  	<button class="btn btn-success" type="submit">Submit</button>
+		</form>
+		<hr><hr>
+			<table class="table">
+				<h2>Student Data Tables</h2>
+			  <thead class="bg-primary">
+			    <tr>
+			      <th scope="col">ID</th>
+			      <th scope="col">First Name</th>
+			      <th scope="col">Last Name</th>
+			      <th scope="col">Address</th>
+			      <th scope="col">Age</th>
+			      <th scope="col">Email</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			  	{% for student in students  %}
+			    <tr>
+			      <th scope="row">{{ student.id }}</th>
+			      <td>{{ student.first_name }}</td>
+			      <td>{{ student.last_name }}</td>
+			      <td>{{ student.address }}</td>
+			      <td>{{ student.age }}</td>
+			      <td>{{ student.email }}</td>
+			    </tr>
+			  	{% endfor %}
+			  </tbody>
+			</table>
+			<div class="text-right">
+			  	<a class="btn btn-warning" href="{% url 'impexpapp:export' %}">Export Student Data</a>
+			</div>
+	</div>
+</body>
+</html>
